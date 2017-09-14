@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedisPool;
@@ -37,8 +38,6 @@ public class RedisSpringConfig {
     private Integer redisNode1Port;
     
 
-    
-
     private JedisPoolConfig jedisPoolConfig() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         //设置最大实例总数 
@@ -52,6 +51,11 @@ public class RedisSpringConfig {
         jedisPoolConfig.setTestOnBorrow(testOnBorrow); 
         return jedisPoolConfig;
     }
+    
+    @Bean
+    public JedisPool jedisPool() {  
+        return new JedisPool(new JedisPoolConfig() , redisNode1Host, redisNode1Port);  
+    } 
 
     @Bean
     public ShardedJedisPool shardedJedisPool() {
